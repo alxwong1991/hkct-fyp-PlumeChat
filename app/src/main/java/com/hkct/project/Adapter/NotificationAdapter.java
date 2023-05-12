@@ -1,10 +1,7 @@
 package com.hkct.project.Adapter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,30 +10,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hkct.project.ChatSellerActivity;
 import com.hkct.project.CommentsActivity;
 import com.hkct.project.MessageHostActivity;
-import com.hkct.project.Model.Event;
 import com.hkct.project.Model.Notification;
 import com.hkct.project.Model.Users;
 import com.hkct.project.R;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,6 +95,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                         context.startActivity(messageHostIntent);
                                         // update the background color
                                         layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                                        holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
                                     } else {
                                         Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
                                     }
@@ -127,6 +117,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                         context.startActivity(chatSellerIntent);
                                         // update the background color
                                         layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                                        holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
                                     } else {
                                         Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
                                     }
@@ -148,6 +139,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                         context.startActivity(viewPostIntent);
                                         // update the background color
                                         layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                                        holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
                                     } else {
                                         Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
                                     }
