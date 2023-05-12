@@ -79,26 +79,31 @@ public class EditProductActivity extends AppCompatActivity {
                 String name = mEditProductName.getText().toString();
                 String price = mEditProductPrice.getText().toString();
                 String detail = mEditProductDetail.getText().toString();
-                
-                DocumentReference updateProduct = firestore.collection("Products").document(productId);
-                updateProduct.update(
-                        "name", name,
-                        "price", price,
-                        "detail", detail,
-                        "time", FieldValue.serverTimestamp()
-                ).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            mProgressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(EditProductActivity.this, "Product Updated Successfully!!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(EditProductActivity.this, StoreActivity.class));
-                        } else {
-                            mProgressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(EditProductActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.isDigitsOnly(price)) {
+                    DocumentReference updateProduct = firestore.collection("Products").document(productId);
+                    updateProduct.update(
+                            "name", name,
+                            "price", price,
+                            "detail", detail,
+                            "time", FieldValue.serverTimestamp()
+                    ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                mProgressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(EditProductActivity.this, "Product Updated Successfully!!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(EditProductActivity.this, StoreActivity.class));
+                            } else {
+                                mProgressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(EditProductActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(EditProductActivity.this, "Price must be a number", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
