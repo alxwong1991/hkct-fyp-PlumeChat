@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NavDemo -->
+    <item
+        android:id="@+id/nav_discover"
+        android:onClick="menu1_click"
+        android:title="Discover" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:onClick="menu2_click"
+        android:title="Profile" />
+
+    <item
+        android:id="@+id/nav_event"
+        android:onClick="menu3_click"
+        android:title="Event" />
+
+    <item
+        android:id="@+id/nav_membership"
+        android:onClick="menu4_click"
+        android:title="Membership" />
+
+    <item
+        android:id="@+id/nav_store"
+        android:onClick="menu5_click"
+        android:title="Store"
+        />
+
+
+    <!-- NavDemo -->
+
+</menu>
