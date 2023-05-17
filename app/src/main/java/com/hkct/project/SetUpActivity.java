@@ -117,10 +117,12 @@ public class SetUpActivity extends AppCompatActivity {
                         });
                     } else {
                         progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(SetUpActivity.this, "Please Select picture and write your name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetUpActivity.this, "Please input a username", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    saveToFireStore(null , name , mImageUri);
+                } else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(SetUpActivity.this, "Please add a profile image", Toast.LENGTH_SHORT).show();
+//                    saveToFireStore(null , name , mImageUri);
                 }
             }
         });
