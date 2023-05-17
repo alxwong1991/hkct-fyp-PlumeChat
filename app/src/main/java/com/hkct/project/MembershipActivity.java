@@ -5,10 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -39,7 +37,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.hkct.project.Adapter.PostAdapter;
 import com.hkct.project.Model.Post;
 import com.hkct.project.Model.Users;
 import com.stripe.android.PaymentConfiguration;
@@ -49,9 +46,7 @@ import com.stripe.android.paymentsheet.PaymentSheetResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,11 +55,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.http.POST;
 
 public class MembershipActivity extends AppCompatActivity {
 
-    private final String TAG="MembershipActivity===>";
+    private final String TAG = "MembershipActivity===>";
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -118,7 +112,7 @@ public class MembershipActivity extends AppCompatActivity {
 
 //        setNavigationDrawer();
 
-        Log.d(TAG,"===>MembershipActivity!!!");
+        Log.d(TAG, "===>MembershipActivity!!!");
 
         // access to firestore
         firestore = FirebaseFirestore.getInstance();
@@ -221,25 +215,25 @@ public class MembershipActivity extends AppCompatActivity {
                         // if membership is 1 then icon appear otherwise the icon is invisible
                         if (memberShip.equals("1")) {
                             mMembershipIcon.setVisibility(View.VISIBLE);
-                            plan=findViewById(R.id.plan);
+                            plan = findViewById(R.id.plan);
                             plan.setText("Premium");
                             plan.setTextColor(Color.parseColor("#85C343"));
-                            plan.setTextSize(TypedValue.COMPLEX_UNIT_DIP,42);
+                            plan.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 42);
 
 //                            TextView title_plan=findViewById(R.id.title_plan);
 //                            title_plan.setText("transaction number ： " + customerID);
 
 
-                            TextView monthplan=findViewById(R.id.monthplan);
+                            TextView monthplan = findViewById(R.id.monthplan);
                             monthplan.setText("Expiry Date");
                             monthplan.setTextColor(Color.parseColor("#E3170D"));
                             monthplan.setTextSize(18);
 
-                            planDate=findViewById(R.id.planDate);
+                            planDate = findViewById(R.id.planDate);
                             planDate.setText(format);
                             planDate.setTextSize(20);
 
-                            Button btnPay =findViewById(R.id.btn);
+                            Button btnPay = findViewById(R.id.btn);
                             btnPay.setVisibility(View.GONE);
 
 
@@ -250,7 +244,7 @@ public class MembershipActivity extends AppCompatActivity {
                 }
             }
         });
-        Log.d(TAG,"===>profileActivity!!!");
+        Log.d(TAG, "===>profileActivity!!!");
         setNavigationDrawer();
 
 
@@ -263,7 +257,6 @@ public class MembershipActivity extends AppCompatActivity {
 
             onPaymentResult(paymentSheetResult);
         });
-
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -285,7 +278,7 @@ public class MembershipActivity extends AppCompatActivity {
 //                            Toast.makeText(MembershipActivity.this, customerID, Toast.LENGTH_SHORT).show();
 
                             // transaction number
-                            Log.d("debug || customerID  : ", "result :" + customerID );
+                            Log.d("debug || customerID  : ", "result :" + customerID);
 
                             firestore.collection("Users").document(Uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -297,7 +290,7 @@ public class MembershipActivity extends AppCompatActivity {
 
                                             // if membership is 1 then icon appear otherwise the icon is invisible
                                             if (memberShip.equals("1")) {
-                                                TextView title_plan=findViewById(R.id.title_plan);
+                                                TextView title_plan = findViewById(R.id.title_plan);
                                                 title_plan.setText("Transaction Number " + customerID);
                                                 title_plan.setTextColor(Color.parseColor("#FFFAFA"));
                                                 title_plan.setTextSize(20);
@@ -309,11 +302,9 @@ public class MembershipActivity extends AppCompatActivity {
                             });
 
 
-
-
                             getEphericalKey(customerID);
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -322,7 +313,7 @@ public class MembershipActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -347,7 +338,7 @@ public class MembershipActivity extends AppCompatActivity {
 
     //payment success
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
-        if(paymentSheetResult instanceof PaymentSheetResult.Completed){
+        if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             Toast.makeText(this, "payment success", Toast.LENGTH_SHORT).show();
 
             firestore.collection("Users").document(Uid).update("membership", "1").addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -383,7 +374,7 @@ public class MembershipActivity extends AppCompatActivity {
 
                             getClientSecret(customerID, EphericalKey);
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -392,7 +383,7 @@ public class MembershipActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -428,10 +419,10 @@ public class MembershipActivity extends AppCompatActivity {
                             ClientSecret = object.getString("client_secret");
 //                            Toast.makeText(MembershipActivity.this, ClientSecret, Toast.LENGTH_SHORT).show();
 
-                            Log.d("debug || ClientSecret  : ", "result :" + ClientSecret );
+                            Log.d("debug || ClientSecret  : ", "result :" + ClientSecret);
 
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -440,7 +431,7 @@ public class MembershipActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -454,7 +445,7 @@ public class MembershipActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("customer", customerID);
-                params.put("amount", "100"+"00");
+                params.put("amount", "100" + "00");
                 params.put("currency", "usd");
                 params.put("automatic_payment_methods[enabled]", "true");
                 return params;
@@ -470,7 +461,7 @@ public class MembershipActivity extends AppCompatActivity {
 
         paymentSheet.presentWithPaymentIntent(
                 ClientSecret, new PaymentSheet.Configuration("Plume Chat Limited"
-                , new PaymentSheet.CustomerConfiguration(
+                        , new PaymentSheet.CustomerConfiguration(
                         customerID,
                         EphericalKey
                 ))
@@ -479,11 +470,11 @@ public class MembershipActivity extends AppCompatActivity {
 
     }
 
-    private void setNavigationDrawer(){
+    private void setNavigationDrawer() {
         // drawer layout instance
         drawerLayout = findViewById(R.id.drawerLayout);
         // Toggle the menu icon
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.nav_open,R.string.nav_close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
         actionBarDrawerToggle.syncState();
 
         // pass the toggle for the drawer layout listener
@@ -496,7 +487,7 @@ public class MembershipActivity extends AppCompatActivity {
     // drawer when the icon is clicked
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d(TAG,"onOptionsItemSelected->" + item.getItemId());
+        Log.d(TAG, "onOptionsItemSelected->" + item.getItemId());
 
 //        if (item.getItemId()==R.id.nav_account){
 //            Log.d(TAG,"onOptionsItemSelected->" + "id=" + R.id.nav_account + "title=" + item.getTitle());
@@ -512,14 +503,15 @@ public class MembershipActivity extends AppCompatActivity {
     // Menu
     //   Discover
     public void menu1_click(MenuItem menuItem) {
-        Log.d(TAG,"menu1_click()->" + menuItem.getItemId() + ","+ menuItem.getTitle());
+        Log.d(TAG, "menu1_click()->" + menuItem.getItemId() + "," + menuItem.getTitle());
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         startActivity(new Intent(this, DiscoverActivity.class));
         drawerLayout.closeDrawers();
     }
+
     //   Profile
     public void menu2_click(MenuItem menuItem) {
-        Log.d(TAG,"menu2_click()->" + menuItem.getItemId() + ","+ menuItem.getTitle());
+        Log.d(TAG, "menu2_click()->" + menuItem.getItemId() + "," + menuItem.getTitle());
         startActivity(new Intent(this, ProfileActivity.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         drawerLayout.closeDrawers();
@@ -527,7 +519,7 @@ public class MembershipActivity extends AppCompatActivity {
 
     //   Events
     public void menu3_click(MenuItem menuItem) {
-        Log.d(TAG,"menu3_click()->" + menuItem.getItemId() + ","+ menuItem.getTitle());
+        Log.d(TAG, "menu3_click()->" + menuItem.getItemId() + "," + menuItem.getTitle());
         startActivity(new Intent(this, EventActivity.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         drawerLayout.closeDrawers();
@@ -558,7 +550,7 @@ public class MembershipActivity extends AppCompatActivity {
     }
 
     public void menu_profile_click(MenuItem m) {
-        startActivity(new Intent(getApplicationContext(),SetUpActivity.class));
+        startActivity(new Intent(getApplicationContext(), SetUpActivity.class));
     }
 
     public void menu_notification_click(MenuItem m) {
@@ -566,7 +558,7 @@ public class MembershipActivity extends AppCompatActivity {
     }
 
     public void menu_logout_click(MenuItem m) {
-        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         FirebaseAuth.getInstance().signOut();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         Toast.makeText(MembershipActivity.this, "Logout successful", Toast.LENGTH_SHORT).show();

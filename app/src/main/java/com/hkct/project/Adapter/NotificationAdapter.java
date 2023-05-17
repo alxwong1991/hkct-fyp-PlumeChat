@@ -82,81 +82,85 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.mNotificationType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (notificationType.toLowerCase()) {
-                    case "event":
-                        firestore.collection("Events").document(notificationRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot documentSnapshot = task.getResult();
-                                    if (documentSnapshot.exists()) {
-                                        Intent messageHostIntent = new Intent(context, MessageHostActivity.class);
-                                        messageHostIntent.putExtra("eventId", notificationRef);
-                                        context.startActivity(messageHostIntent);
-                                        // update the background color
-                                        layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
-                                        holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
-                                    } else {
-                                        Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(context, "Error getting document: " + task.getException(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                        break;
-                    case "product":
-                        firestore.collection("Products").document(notificationRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot documentSnapshot = task.getResult();
-                                    if (documentSnapshot.exists()) {
-                                        Intent chatSellerIntent = new Intent(context, ChatSellerActivity.class);
-                                        chatSellerIntent.putExtra("productId", notificationRef);
-                                        context.startActivity(chatSellerIntent);
-                                        // update the background color
-                                        layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
-                                        holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
-                                    } else {
-                                        Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(context, "Error getting document: " + task.getException(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                        break;
-                    case "post":
-                        firestore.collection("Posts").document(notificationRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot documentSnapshot = task.getResult();
-                                    if (documentSnapshot.exists()) {
-                                        Intent viewPostIntent = new Intent(context, CommentsActivity.class);
-                                        viewPostIntent.putExtra("postid", notificationRef);
-                                        context.startActivity(viewPostIntent);
-                                        // update the background color
-                                        layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
-                                        holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
-                                    } else {
-                                        Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(context, "Error getting document: " + task.getException(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                        break;
-                    default:
-                        // do something when the notificationType is neither "event" nor "product"
-                        Toast.makeText(context, "Notification not match with type", Toast.LENGTH_SHORT).show();
-                        break;
-                }
+                handleNotificationClick(notificationType, notificationRef, layout, holder);
             }
         });
+    }
 
+    private void handleNotificationClick(String notificationType, String notificationRef, ConstraintLayout layout, NotificationViewHolder holder) {
+        firestore = FirebaseFirestore.getInstance();
+        switch (notificationType.toLowerCase()) {
+            case "event":
+                firestore.collection("Events").document(notificationRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                Intent messageHostIntent = new Intent(context, MessageHostActivity.class);
+                                messageHostIntent.putExtra("eventId", notificationRef);
+                                context.startActivity(messageHostIntent);
+                                // update the background color
+                                layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                                holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                            } else {
+                                Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context, "Error getting document: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            case "product":
+                firestore.collection("Products").document(notificationRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                Intent chatSellerIntent = new Intent(context, ChatSellerActivity.class);
+                                chatSellerIntent.putExtra("productId", notificationRef);
+                                context.startActivity(chatSellerIntent);
+                                // update the background color
+                                layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                                holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                            } else {
+                                Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context, "Error getting document: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            case "post":
+                firestore.collection("Posts").document(notificationRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                Intent viewPostIntent = new Intent(context, CommentsActivity.class);
+                                viewPostIntent.putExtra("postid", notificationRef);
+                                context.startActivity(viewPostIntent);
+                                // update the background color
+                                layout.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                                holder.mNotificationDelBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.ivory_black));
+                            } else {
+                                Toast.makeText(context, "No matching document found", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context, "Error getting document: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            default:
+                // do something when the notificationType is neither "event" nor "product"
+                Toast.makeText(context, "Notification not match with type", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override
